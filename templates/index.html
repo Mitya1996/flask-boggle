@@ -18,9 +18,13 @@
     {% endfor %}
 </table>
 
-<form action="/guess" method="POST">
+<form>
     <label for="word">Guess</label>
     <input type="text" id="word" name="word">
-    <button>Submit</button>
+    <button id="submit-btn">Submit</button>
 </form>
+
+<div id="response"></div>
+
+
 {% endblock %}
