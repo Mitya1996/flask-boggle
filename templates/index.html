@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Boggle{% endblock %}
+
+{% block content %}
+
+{% set board = session['board'] %}
+
+<h1>Boggle</h1>
+
+<table>
+    {% for row in board %}
+    <tr>
+        {% for td in row %}
+        <td>{{ td }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<form action="/guess" method="POST">
+    <label for="word">Guess</label>
+    <input type="text" id="word" name="word">
+    <button>Submit</button>
+</form>
+{% endblock %}

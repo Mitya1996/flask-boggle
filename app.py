@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from boggle import Boggle
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -9,6 +9,7 @@ app.debug = True
 
 # set a 'SECRET_KEY' to enable the Flask session cookies
 app.config['SECRET_KEY'] = 'trolol'
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -19,4 +20,9 @@ def home():
     if not session.get('board', None):               #unless it already exists
         session['board'] = boggle_game.make_board()  #create a 5x5 board in flask session cookie 
 
-    return render_template('home.html', boggle_game=boggle_game)
+    return render_template('index.html')
+
+@app.route('/guess', methods=['POST'])
+def guesss():
+    print(request.args['word'])
+    return redirect('/')
