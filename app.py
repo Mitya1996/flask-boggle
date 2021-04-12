@@ -24,5 +24,5 @@ def home():
 
 @app.route('/guess', methods=['POST'])
 def guesss():
-    print(request.args['word'])
+    print(request.form['word'])
     return redirect('/')
