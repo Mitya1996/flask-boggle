@@ -8,6 +8,8 @@
 
 <h1>Boggle</h1>
 
+<span>Score: <span id="score">0</span></span>
+
 <table>
     {% for row in board %}
     <tr>
@@ -19,7 +21,7 @@
 </table>
 
 <form>
-    <label for="word">Guess</label>
+    <label for="word">Guess:</label>
     <input type="text" id="word" name="word">
     <button id="submit-btn">Submit</button>
 </form>
