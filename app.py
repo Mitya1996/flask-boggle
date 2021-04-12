@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from boggle import Boggle
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -12,5 +12,8 @@ app.config['SECRET_KEY'] = 'trolol'
 
 toolbar = DebugToolbarExtension(app)
 
-
 boggle_game = Boggle()
+
+@app.route('/')
+def home():
+    return render_template('home.html')
