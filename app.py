@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from boggle import Boggle
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -16,4 +16,7 @@ boggle_game = Boggle()
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    if not session.get('board', None):               #unless it already exists
+        session['board'] = boggle_game.make_board()  #create a 5x5 board in flask session cookie 
+
+    return render_template('home.html', boggle_game=boggle_game)
