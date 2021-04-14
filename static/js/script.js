@@ -1,5 +1,7 @@
 let score = 0;
 let guesses = []
+let time = 5
+let highScore = 0
 
 $('#submit-btn').on('click', handleGuess);
 
@@ -22,6 +24,23 @@ async function handleGuess(e) {
         score += guess.length;
         $('#score').text(score);
     }
-
 }
 
+
+let timerInterval = setInterval(function() {
+    if(time <= 1) {
+        clearInterval(timerInterval);
+        $('#submit-btn').attr('disabled', true); //disable further guesses
+        updateHighScore();
+        alert('Times Up!');
+    }
+    time--;
+    $('#timer').text(time);
+}, 1000);
+
+function updateHighScore() {
+    if(score > highScore) {
+        highScore = score;
+        $('#high-score').text(highScore);
+    }
+}
