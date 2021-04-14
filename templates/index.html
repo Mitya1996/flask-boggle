@@ -8,7 +8,10 @@
 
 <h1>Boggle</h1>
 
-<span class="game-info-wrapper">Score: <span id="high-score">0</span></span>
+<span class="game-info-wrapper">Number Of Times Played: <span id="num-played"></span></span>
+<br>
+<br>
+<span class="game-info-wrapper">High Score: <span id="high-score"></span></span>
 <br>
 <br>
 <span class="game-info-wrapper">Score: <span id="score">0</span></span>
@@ -29,6 +32,8 @@
     <input type="text" id="word" name="word">
     <button id="submit-btn">Submit</button>
 </form>
+
+<button id="reset-btn" onclick="newGame()">New Game</button>
 
 <div id="response"></div>
 

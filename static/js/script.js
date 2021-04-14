@@ -1,8 +1,10 @@
-let score = 0;
+let score;
 let guesses = []
-let time = 5
-let highScore = 0
+const gameTime = 10
+let highScore //todo make this as a get request from backend
+let numPlayed
 
+newGame();
 $('#submit-btn').on('click', handleGuess);
 
 async function handleGuess(e) {
@@ -26,21 +28,99 @@ async function handleGuess(e) {
     }
 }
 
+function newGame() {
+    $('#submit-btn').attr('disabled', false);  
+    $('#reset-btn').attr('disabled', true);  
+    let time = gameTime;
+    updateNumPlayed();
+    updateHighScore();
+    initScore();
+    initHighScore();
 
-let timerInterval = setInterval(function() {
-    if(time <= 1) {
-        clearInterval(timerInterval);
-        $('#submit-btn').attr('disabled', true); //disable further guesses
-        updateHighScore();
-        alert('Times Up!');
+    let timerInterval = setInterval(function() {
+        if(time <= 1) {
+            clearInterval(timerInterval);
+            $('#submit-btn').attr('disabled', true); //disable further guesses
+            $('#reset-btn').attr('disabled', false); //allow reset
+            updateHighScore();
+            alert('Times Up!');
+        }
+        time--;
+        $('#timer').text(time);
+    }, 1000);
+}
+
+function initScore() {
+    score = 0;
+    $('#score').text(score);
+}
+
+async function initHighScore() {
+    axios.get('/updateHighScore')
+    .then(function (response) {
+        // handle success
+        console.log(response);
+        highScore = response.data.high_score;
+        $('#high-score').text(highScore);
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .then(function () {
+        // always executed
+    });
+}
+
+async function initNumPlayed() {
+    axios.get('/updateNumPlayed')
+    .then(function (response) {
+        // handle success
+        console.log(response);
+        numPlayed = response.data.num_played;
+        $('#num-played').text(numPlayed);
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
+    .then(function () {
+        // always executed
+    });
+}
+
+async function updateHighScore() {
+    if(!highScore) {
+        initHighScore();
     }
-    time--;
-    $('#timer').text(time);
-}, 1000);
-
-function updateHighScore() {
     if(score > highScore) {
         highScore = score;
         $('#high-score').text(highScore);
+        //update on back end (or save to flask session cookie rather)
+        await axios.post('/updateHighScore', {
+            newHighScore: highScore,
+          })
+          .then(function (response) {
+            console.log(response);
+            highScore = response.data.session_HS;
+            $('#high-score').text(highScore);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
+}
+
+async function updateNumPlayed() {
+    await axios.post('/updateNumPlayed', {
+        'incrementOne': 'true',
+    })
+    .then(function (response) {
+        console.log(response);
+        numPlayed = response.data.num_played;
+        $('#num-played').text(numPlayed);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }

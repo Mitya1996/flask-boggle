@@ -28,3 +28,31 @@ def guess():
     word = request.args['guess']
     result = boggle_game.check_valid_word(board, word)
     return jsonify({'response': result})
+
+@app.route('/updateHighScore', methods=['GET', 'POST'])
+def updateHighScore():
+    session_HS = session.get('High Score', 0)
+    if request.method == 'POST':
+        new_HS = request.json['newHighScore']
+        if new_HS > session_HS:
+            session['High Score'] = new_HS
+
+    return jsonify({'high_score': session_HS})
+
+# @app.route('/getHighScore')
+# def getHighScore():
+#     session_HS = session.get('High Score', 0)
+#     return jsonify({'high_score': session_HS})
+
+
+@app.route('/updateNumPlayed', methods=['GET', 'POST'])
+def updateNumPlayed():
+    session['num_played'] = session.get('num_played', 0) # initialize if not exist
+    
+    if request.method == 'POST':
+        valid_increment = request.json['incrementOne']
+        if valid_increment:
+            session['num_played'] += 1 
+            
+    return jsonify({'num_played': session['num_played']})
+    
