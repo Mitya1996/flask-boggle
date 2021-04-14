@@ -30,7 +30,8 @@ async function handleGuess(e) {
 
 function newGame() {
     $('#submit-btn').attr('disabled', false);  
-    $('#reset-btn').attr('disabled', true);  
+    $('#reset-btn').attr('disabled', true);
+    $('#alert').empty();  
     let time = gameTime;
     updateNumPlayed();
     updateHighScore();
@@ -43,7 +44,7 @@ function newGame() {
             $('#submit-btn').attr('disabled', true); //disable further guesses
             $('#reset-btn').attr('disabled', false); //allow reset
             updateHighScore();
-            alert('Times Up!');
+            customAlert('Times Up!');
         }
         time--;
         $('#timer').text(time);
@@ -123,4 +124,12 @@ async function updateNumPlayed() {
     .catch(function (error) {
         console.log(error);
     });
+}
+
+function customAlert(msg) {
+    let alert = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>${msg}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`
+    $('#alert').html(alert);
 }

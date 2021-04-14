@@ -38,12 +38,7 @@ def updateHighScore():
             session['High Score'] = new_HS
 
     return jsonify({'high_score': session_HS})
-
-# @app.route('/getHighScore')
-# def getHighScore():
-#     session_HS = session.get('High Score', 0)
-#     return jsonify({'high_score': session_HS})
-
+    
 
 @app.route('/updateNumPlayed', methods=['GET', 'POST'])
 def updateNumPlayed():
@@ -53,6 +48,6 @@ def updateNumPlayed():
         valid_increment = request.json['incrementOne']
         if valid_increment:
             session['num_played'] += 1 
-            
+
     return jsonify({'num_played': session['num_played']})
     
