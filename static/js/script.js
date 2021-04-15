@@ -1,6 +1,6 @@
 let score;
 let guesses = []
-const gameTime = 10
+const gameTime = 60
 let highScore //todo make this as a get request from backend
 let numPlayed
 
@@ -9,8 +9,10 @@ $('#submit-btn').on('click', handleGuess);
 
 async function handleGuess(e) {
     e.preventDefault();
+    $('#alert').empty();  
 
     let guess = $('#word').val();
+
     let res = await axios.get('/guess', { params: { guess: guess } });
     response = res.data.response;
     $('#response').text(response); //set innertext  
@@ -19,7 +21,7 @@ async function handleGuess(e) {
     let alreadyGuessed = guesses.find(e => e == guess);
     guesses.push(guess)
     if(alreadyGuessed) {
-        alert('Already Guessed'); 
+        customAlert('Already Guessed'); 
     }
     //if 'ok' then score++ and rerender score
     else if(response == 'ok') {

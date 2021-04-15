@@ -17,6 +17,9 @@ boggle_game = Boggle()
 
 @app.route('/')
 def home():
+    """
+    homepage route
+    """
     if not session.get('board', None):               #unless it already exists
         session['board'] = boggle_game.make_board()  #create a 5x5 board in flask session cookie 
 
@@ -38,7 +41,7 @@ def updateHighScore():
             session['High Score'] = new_HS
 
     return jsonify({'high_score': session_HS})
-    
+
 
 @app.route('/updateNumPlayed', methods=['GET', 'POST'])
 def updateNumPlayed():
