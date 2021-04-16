@@ -23,6 +23,22 @@ class FlaskTests(TestCase):
             #check if Boggle h1 is in the response
             self.assertIn('<h1>Boggle</h1>', html)
 
+    def test_guess_ok(self):
+        with app.test_client() as client:
+            test_board = [["C", "A", "T", "T", "T"], 
+                          ["C", "A", "T", "T", "T"], 
+                          ["C", "A", "T", "T", "T"], 
+                          ["C", "A", "T", "T", "T"], 
+                          ["C", "A", "T", "T", "T"]]
+            with client.session_transaction() as change_session:
+                change_session['board'] = test_board
+            
+            resp = client.get('/guess?guess=cat') 
+            message = resp.json['response']
+
+            self.assertEqual("ok", message)
+            self.assertEqual(resp.status_code, 200)
+
     def test_guess_not_word(self):
         with app.test_client() as client:
 
@@ -50,18 +66,3 @@ class FlaskTests(TestCase):
             self.assertEqual("not-on-board", message)
             self.assertEqual(resp.status_code, 200)
 
-    def test_guess_ok(self):
-        with app.test_client() as client:
-            test_board = [["C", "A", "T", "T", "T"], 
-                          ["C", "A", "T", "T", "T"], 
-                          ["C", "A", "T", "T", "T"], 
-                          ["C", "A", "T", "T", "T"], 
-                          ["C", "A", "T", "T", "T"]]
-            with client.session_transaction() as change_session:
-                change_session['board'] = test_board
-            
-            resp = client.get('/guess?guess=cat') 
-            message = resp.json['response']
-
-            self.assertEqual("ok", message)
-            self.assertEqual(resp.status_code, 200)
